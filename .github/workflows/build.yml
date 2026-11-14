@@ -6,12 +6,17 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    container: ghcr.io/kivy/buildozer:latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Build APK
-        uses: docker://ghcr.io/kivy/buildozer:latest
+        run: yes | buildozer android debug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
         with:
-          args: buildozer android debug
+          name: AdventureGame-APK
+          path: bin/*.apk
